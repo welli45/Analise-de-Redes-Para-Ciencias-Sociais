@@ -1,0 +1,127 @@
+---
+title: 'Redes sociais e econômicas: Modelos e análises'
+author: "Wellington Santos Souza"
+date: "`r Sys.Date()`"
+output: html_document
+---
+### Preparando o ambiente de trabalho
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#Limpando Ambiente Global
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, comment = "")
+rm(list=ls(all=T))
+```
+
+```{r, echo = FALSE}
+#Definindo opção de repositório para instalacão dos pacotes necessários
+aviso <- getOption("warn")
+options(warn=-1)
+options(repos=structure(c(CRAN="https://cran.r-project.org/")))
+options(warn=aviso)
+rm(aviso)
+```
+
+```{r, echo = FALSE}
+#Definindo opcao de exibicao de numeros sem exponencial
+aviso <- getOption("warn")
+options(warn=-1)
+options(scipen=999)
+options(warn=aviso)
+rm(aviso)
+```
+
+```{r results='hide', echo=FALSE, message=FALSE, warning=FALSE}
+# Instalando e carregando pacotes necessários
+if(!require("igraph")){install.packages("igraph")}; library("igraph")
+if(!require("network")){install.packages("network")}; library("network")
+if(!require("sna")){install.packages("sna")}; library("sna")
+if(!require(ggraph)){install.packages("ggraph")}; library(ggraph)
+if(!require("tidyverse")){install.packages("tidyverse")}; library(tidyverse)
+if(!require("summarytools")){install.packages("summarytools")}; library(summarytools)
+```
+
+### Introdução
+
+A análise de redes sociais (ARS) é um campo de estudo interdisciplinar que busca compreender as relações sociais entre atores, como indivíduos, grupos, organizações, países, entre outros. A ARS tem sido aplicada em diversas áreas do conhecimento, como sociologia, antropologia, psicologia, economia, ciência política, entre outras.
+
+A ARS tem como objetivo principal a análise de relações sociais entre atores, que podem ser pessoas, grupos, organizações, países, entre outros. As relações sociais podem ser de diversos tipos, como amizade, colaboração, troca de informações, entre outros. A ARS busca compreender como as relações sociais entre atores influenciam o comportamento dos atores e o desempenho de sistemas sociais.
+
+A rede no qual trabalhamos inicialmente aqui se trata de um conjunto de dados de troca de favores em uma das aldeias rurais indianas. Essa rede foi retirada do Curso Redes sociais e econômicas: Modelos e análises da Stanford University, ministrado pelo professor Matthew O. Jackson.
+
+```{r}
+# Carregando dados
+KeroNetwork <- read.csv("D:/1.Cursos/EmAndamento/ARS/01/KeroNetwork.csv", sep = ';',
+                        row.names = 'KeroNetwork', header = TRUE)
+
+head(KeroNetwork)
+
+```
+```{r}
+# Criando matriz de adjacência
+KeroNetwork <- as.matrix(KeroNetwork)
+KeroNetwork[1:5, 1:5]
+```
+
+```{r}
+# Criando objeto de rede
+KeroNetwork <- graph.adjacency(KeroNetwork, mode = "undirected", diag = FALSE)
+```
+
+```{r}
+set.seed(123)
+KeroNetwork %>%
+   ggraph(layout = "fr") +
+   geom_edge_arc(colour= "black",
+                  lineend = "round",
+                 strength = .1) +
+  geom_node_point(colour = "black",
+                  size = 3) +
+   geom_node_text(aes(label = name), 
+                  repel = TRUE, 
+                  point.padding = unit(0.2, "lines"), 
+                  colour="gray10") +
+  scale_edge_width(range = c(0, 2.5)) +
+  scale_edge_alpha(range = c(0, .3)) +
+  theme_graph(background = "white") +
+  guides(edge_width = FALSE,
+         edge_alpha = FALSE)
+```
+```{r}
+# Calculando medidas de centralidade
+degree(KeroNetwork)
+```
+
+```{r}
+```
+
+```{r}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
